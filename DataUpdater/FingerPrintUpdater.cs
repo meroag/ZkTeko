@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using zkemkeeper;
-using ZkTeko.Models;
 
-namespace ZkTeko.Classes
+namespace DataUpdater
 {
-    internal class FingerPrintDevice
+    class FingerPrintDevice
     {
         readonly CZKEM device;
         private bool isConnected;
@@ -22,7 +21,7 @@ namespace ZkTeko.Classes
             return isConnected;
         }
 
-        public void Disconnect()
+        public void Discoonect()
         {
             if (isConnected)
                 device.Disconnect();
@@ -50,7 +49,7 @@ namespace ZkTeko.Classes
                 int dwMinute = 0;
                 while (device.GetGeneralLogData(dwMachineNumber,ref dwTMachineNumber,ref dwEnrollNumber,ref dwEMachineNumber,ref dwVerifyMode,ref dwInOutMode,ref dwYear,ref dwMonth,ref dwDay,ref dwHour,ref dwMinute))
                 {
-                    var i = new FingerPrintRecord
+                    FingerPrintRecord i = new FingerPrintRecord
                     {
                         IdUser = dwEnrollNumber,
                         Date = new DateTime(dwYear, dwMonth, dwDay, dwHour, dwMinute, 0)
@@ -89,25 +88,6 @@ namespace ZkTeko.Classes
             }
 
             return records;
-        }
-
-        public List<Employee> GetEmployees()
-        {
-            var res = new List<Employee>();
-            int dwMachineNumber = 0;
-            int dwEnrollNumber = 0;
-            string Name = "";
-            string Password = "";
-            int Privilege = 0;
-            bool Enabled = false;
-            while (device.GetAllUserInfo(dwMachineNumber, ref dwEnrollNumber, ref Name, ref Password, ref Privilege,ref Enabled))
-            {
-                var cardNum = "";
-                var x = device.GetStrCardNumber(out cardNum);
-                res.Add(new Employee(){id = dwEnrollNumber,name = Name,cardNumber = cardNum});
-            }
-
-            return res;
         }
     }
 

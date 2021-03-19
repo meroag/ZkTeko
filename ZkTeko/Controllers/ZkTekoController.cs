@@ -16,6 +16,8 @@ namespace ZkTeko.Controllers
         [Route("api/ZkTeko/GetTerminals")]
         public List<ZkTekoTerminal> GetTerminals()
         {
+            if(!Request.Headers.Contains("ApiKey"))
+                throw new Exception("API Key not found in header");
             var apiKey = Request.Headers.GetValues("ApiKey").FirstOrDefault();
             if (!IsApiKeyValid(apiKey))
                 throw new Exception("API Kay is invalid");
@@ -27,6 +29,8 @@ namespace ZkTeko.Controllers
         [Route("api/ZkTeko/GetEmployees")]
         public GetEmployeesResponse GetEmployees(string act,string terminal_id)
         {
+            if(!Request.Headers.Contains("ApiKey"))
+                throw new Exception("API Key not found in header");
             var apiKey = Request.Headers.GetValues("ApiKey").FirstOrDefault();
 
             if (!IsApiKeyValid(apiKey))
@@ -60,6 +64,8 @@ namespace ZkTeko.Controllers
         [Route("api/ZkTeko/GetPunches")]
         public GetPunchesResponse GetPunches(string act,string date,string terminal_id)
         {
+            if(!Request.Headers.Contains("ApiKey"))
+                throw new Exception("API Key not found in header");
             var apiKey = Request.Headers.GetValues("ApiKey").FirstOrDefault();
             if (!IsApiKeyValid(apiKey))
                 throw new Exception("API Kay is invalid");
