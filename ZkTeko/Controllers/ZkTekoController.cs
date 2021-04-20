@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Web.Http;
+using Microsoft.Ajax.Utilities;
 using ZkTeko.Classes;
 using ZkTeko.Models;
 
@@ -62,7 +63,7 @@ namespace ZkTeko.Controllers
 
         [HttpGet]
         [Route("api/ZkTeko/GetPunches")]
-        public GetPunchesResponse GetPunches(string act,string date,string terminal_id)
+        public GetPunchesResponse GetPunches(string act,string terminal_id,string date="")
         {
             if(!Request.Headers.Contains("ApiKey"))
                 throw new Exception("API Key not found in header");
@@ -83,11 +84,11 @@ namespace ZkTeko.Controllers
                     var data = d.GetDataFromDevice();
                     foreach (var record in data)
                     {
-                        if (record.Date.ToString("YYYY-MM-DD") == date)
+                        if (record.Date.ToString("yyyy-MM-dd") == date || date.IsNullOrWhiteSpace())
                         {
                             res.data.Add(new Punches()
                             {
-                                date = record.Date.ToString("YYYY-MM-DD"),
+                                date = record.Date.ToString("yyyy-MM-dd"),
                                 time = record.Date.ToString("hh:mm:ss"),
                                 employees_id = record.IdUser,
                             });
