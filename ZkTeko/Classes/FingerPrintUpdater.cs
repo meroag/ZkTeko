@@ -56,7 +56,6 @@ namespace ZkTeko.Classes
                         Date = new DateTime(dwYear, dwMonth, dwDay, dwHour, dwMinute, 0)
                     };
 
-                    if (i.Date.ToShortDateString() == DateTime.Now.ToShortDateString())
                         records.Add(i);
                 }
             }
@@ -83,7 +82,6 @@ namespace ZkTeko.Classes
                         Date = new DateTime(dwYear, dwMonth, dwDay, dwHour, dwMinute, dwSecond)
                     };
 
-                    if (i.Date.ToShortDateString() == DateTime.Now.ToShortDateString())
                         records.Add(i);
                 }
             }
@@ -96,15 +94,14 @@ namespace ZkTeko.Classes
             var res = new List<Employee>();
             int dwMachineNumber = 0;
             int dwEnrollNumber = 0;
+            string dwEnrollNumber2 = "";
             string Name = "";
             string Password = "";
             int Privilege = 0;
             bool Enabled = false;
-            while (device.GetAllUserInfo(dwMachineNumber, ref dwEnrollNumber, ref Name, ref Password, ref Privilege,ref Enabled))
+            while (device.SSR_GetAllUserInfo(dwMachineNumber,out dwEnrollNumber2,out Name,out Password,out Privilege,out Enabled))
             {
-                var cardNum = "";
-                var x = device.GetStrCardNumber(out cardNum);
-                res.Add(new Employee(){id = dwEnrollNumber,name = Name,cardNumber = cardNum});
+                res.Add(new Employee(){id = Convert.ToInt32(dwEnrollNumber2),name = Name});
             }
 
             return res;
